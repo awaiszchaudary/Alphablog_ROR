@@ -7,7 +7,9 @@
             </div>
             <div class="card-body">
                 <p class="card-text"><%= @user.email %></p>
-                <%= link_to 'Edit', edit_user_registration_path(@user), class: 'btn btn-outline-success' %>
+                <% if current_user.id == @user.id %>
+                    <%= link_to 'Edit', edit_user_registration_path(@user), class: 'btn btn-outline-success' %>
+                <% end %>
                 <%= link_to 'Go to all AlphaBloggers', users_path, class: 'btn btn-outline-info' %>
             </div>
             <div class="card-footer text-body-secondary">
