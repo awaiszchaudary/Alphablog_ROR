@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
 
-  before_action :set_article, only: [:edit, :show, :update, :destroy]
+  before_action :set_article, only: [:edit, :show, :destroy]
   skip_before_action :authenticate_user!, only: [:index]
   
 
@@ -30,6 +30,8 @@ class ArticlesController < ApplicationController
   end
 
   def update
+    @article = Article.find(params[:id])
+    authorize @article, :update?
     if @article.update(article_params)
       flash[:notice] = "Article updated successfully"
       redirect_to article_path(@article)
