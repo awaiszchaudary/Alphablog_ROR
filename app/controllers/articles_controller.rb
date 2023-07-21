@@ -1,6 +1,8 @@
 class ArticlesController < ApplicationController
 
   before_action :set_article, only: [:edit, :show, :update, :destroy]
+  skip_before_action :authenticate_user!, only: [:index]
+  
 
   def index
     @articles = Article.all
@@ -53,6 +55,22 @@ class ArticlesController < ApplicationController
     def set_article
       @article = Article.find(params[:id])
     end
+
+    def require_user
+      if !user_signed_in?
+        flash[:alert] = "You must be loggedin to perform this action."
+        redirect_to new_user_session_path
+      end
+    end
+
+    def require_same_user
+      if current_user.id != @article.user.id
+        flash[:alert] = 'You can only edit or delete your article.'
+        redirect_to articles_path
+      end      
+    end
+
+    
 
 
 end
